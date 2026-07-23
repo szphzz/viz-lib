@@ -81,8 +81,17 @@ def overview(rows, out_dir):
               colors=[szviz.MATCH, szviz.NO_MATCH], title="Did sparks fly?",
               ax=ax[1][0])
 
+    ah = ax[1][1]
     szviz.hist(numbers(rows, "age"), bins=25, title="Age of participants",
-               xlabel="age", ax=ax[1][1])
+               xlabel="age", ax=ah)
+    # Distinguish the modal (tallest) bin: recolour it gold and label it.
+    peak = max(ah.patches, key=lambda b: b.get_height())
+    peak.set_facecolor("#AF8A24")
+    center = peak.get_x() + peak.get_width() / 2
+    ah.annotate(f"mode ≈ {center:.0f}  (n={int(peak.get_height())})",
+                xy=(center, peak.get_height()), xytext=(0, 8),
+                textcoords="offset points", ha="center", fontweight="bold",
+                color="#AF8A24")
 
     fig.suptitle("szviz  ♥  Speed Dating", fontsize=18,
                  fontweight="bold", x=0.02, ha="left")
