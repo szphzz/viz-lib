@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "szviz"
+version = "0.1.0"
+description = "A tiny matplotlib wrapper with a lilac-purple default palette."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "spchung" }]
+keywords = ["matplotlib", "visualization", "plotting", "eda"]
+dependencies = ["matplotlib>=3.5"]
+
+[project.urls]
+Homepage = "https://github.com/szphzz/viz-lib"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/szviz"]
