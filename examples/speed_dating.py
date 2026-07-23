@@ -3,10 +3,12 @@
 Usage:
     python examples/speed_dating.py [path/to/Speed_Dating_Data.csv] [out_dir]
 
-The dataset isn't bundled with the library. Grab "Speed Dating Data.csv" from
+With no arguments it runs on the tiny bundled sample (sample_speed_dating.csv,
+a ~250-row excerpt of the public dataset) so it works with zero setup. For the
+full picture, grab "Speed Dating Data.csv" from
 https://www.kaggle.com/datasets/annavictoria/speed-dating-experiment and pass
-its path as the first argument (default: ./Speed_Dating_Data.csv). Charts are
-written as PNGs into the output directory (default: alongside this script).
+its path. Charts are written as PNGs into the output directory (default:
+alongside this script).
 
 The file uses Latin-1 encoding and carriage-return line endings; csv.DictReader
 handles both. gender is coded 0 = women, 1 = men.
@@ -105,7 +107,8 @@ def ratings_by_gender(rows, out_dir):
 
 
 def main():
-    csv_path = sys.argv[1] if len(sys.argv) > 1 else "Speed_Dating_Data.csv"
+    sample = os.path.join(os.path.dirname(__file__), "sample_speed_dating.csv")
+    csv_path = sys.argv[1] if len(sys.argv) > 1 else sample
     out_dir = sys.argv[2] if len(sys.argv) > 2 else os.path.dirname(__file__)
     os.makedirs(out_dir, exist_ok=True)
     rows = load(csv_path)
