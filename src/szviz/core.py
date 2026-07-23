@@ -25,7 +25,7 @@ PALETTE = ["#E23A6D", "#8E56A6", "#DA6C2E", "#2F9E8E", "#AF8A24", "#BE2A86"]
 PASTELS = ["#F9C9D6", "#E7D3F0", "#F7D9BE", "#C6E6DF", "#EFE3B0", "#F3C4DE"]
 MATCH, NO_MATCH = "#E23A6D", "#B9AEB4"
 
-_LIGHT = {"surface": "#FFF6F8", "ink": "#3A2530", "grid": "#F3D9E1"}
+_LIGHT = {"surface": "#FDE7EC", "ink": "#3A2530", "grid": "#F1CCD7"}
 _DARK = {"surface": "#1F1A1E", "ink": "#F5E6EC", "grid": "#3E3238"}
 
 
