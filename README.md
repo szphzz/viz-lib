@@ -81,6 +81,18 @@ Extras for this dataset:
   binary `match` outcome.
 - `szviz.HEART` — the heart-shaped marker `Path`, reusable in any matplotlib call.
 
+## Examples
+
+[`examples/speed_dating.py`](examples/speed_dating.py) is a runnable tour of the
+library on the Speed Dating dataset — a four-panel overview plus the grouped
+by-gender chart. The dataset isn't bundled; download "Speed Dating Data.csv"
+from [Kaggle](https://www.kaggle.com/datasets/annavictoria/speed-dating-experiment)
+and point the script at it:
+
+```bash
+python examples/speed_dating.py path/to/Speed_Dating_Data.csv
+```
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
