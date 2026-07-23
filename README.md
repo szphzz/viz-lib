@@ -33,6 +33,13 @@ szviz.scatter(attractiveness, likelihood, title="Attractiveness vs. liking")
 szviz.bar(["Attr", "Sinc", "Intel", "Fun", "Amb", "Shar"], prefs,
           title="What people say they want")
 szviz.save("prefs.png")
+
+# Grouped bars: one series per group, sorted by the cross-group average
+szviz.grouped_bar(
+    ["Attractive", "Sincere", "Intelligent", "Fun", "Ambitious", "Shared int."],
+    {"Women": women_means, "Men": men_means},
+    sort="desc", title="Average rating received, by gender",
+)
 ```
 
 ## What you get
@@ -43,6 +50,7 @@ szviz.save("prefs.png")
 | `line(x, y, ...)` | Line chart |
 | `scatter(x, y, ...)` | Scatter plot with heart markers |
 | `bar(labels, values, ...)` | Vertical bars |
+| `grouped_bar(labels, groups, ...)` | Grouped bars, one series per group |
 | `barh(labels, values, ...)` | Horizontal bars |
 | `hist(data, ...)` | Histogram |
 | `pie(labels, values, ...)` | Pie chart |

@@ -9,6 +9,7 @@ from szviz.core import (
     ROSE,
     bar,
     barh,
+    grouped_bar,
     hist,
     line,
     pie,
@@ -18,7 +19,7 @@ from szviz.core import (
     show,
 )
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     "HEART",
@@ -29,6 +30,7 @@ __all__ = [
     "ROSE",
     "bar",
     "barh",
+    "grouped_bar",
     "hist",
     "line",
     "pie",

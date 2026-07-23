@@ -125,6 +125,32 @@ def bar(labels: Sequence, values: Sequence, *, color=ROSE, title=None,
     return fig, ax
 
 
+def grouped_bar(labels: Sequence, groups: dict, *, colors=None, sort=None,
+                title=None, xlabel=None, ylabel=None, ax=None, **kwargs):
+    """Grouped bar chart. ``groups`` maps each series name to its values (one
+    value per label); series colours come from PALETTE. Pass ``sort="desc"``
+    (or ``"asc"``) to reorder the labels by the mean across the groups."""
+    ax, fig = _prepare(ax, title, xlabel, ylabel)
+    names, labels = list(groups), list(labels)
+    data = {n: list(groups[n]) for n in names}
+    if sort in ("desc", "asc"):
+        order = sorted(range(len(labels)), reverse=(sort == "desc"),
+                       key=lambda i: sum(data[n][i] for n in names) / len(names))
+        labels = [labels[i] for i in order]
+        data = {n: [data[n][i] for i in order] for n in names}
+    colors = colors or PALETTE
+    x, width = np.arange(len(labels)), 0.8 / len(names)
+    surface = plt.rcParams["axes.facecolor"]
+    for j, name in enumerate(names):
+        ax.bar(x + (j - (len(names) - 1) / 2) * width, data[name], width,
+               label=name, color=colors[j % len(colors)], edgecolor=surface,
+               linewidth=1.5, **kwargs)
+    ax.set_xticks(x, labels)
+    ax.grid(axis="x", visible=False)
+    ax.legend(frameon=False)
+    return fig, ax
+
+
 def barh(labels: Sequence, values: Sequence, *, color=ROSE, title=None,
          xlabel=None, ylabel=None, ax=None, **kwargs):
     """Horizontal bar chart, handy for long category names."""
