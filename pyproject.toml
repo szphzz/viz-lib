@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "szviz"
-version = "0.1.0"
-description = "A tiny matplotlib wrapper with a lilac-purple default palette."
+version = "0.2.0"
+description = "A tiny, love-themed matplotlib wrapper for exploring the Speed Dating dataset."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE" }
 authors = [{ name = "spchung" }]
-keywords = ["matplotlib", "visualization", "plotting", "eda"]
-dependencies = ["matplotlib>=3.5"]
+keywords = ["matplotlib", "visualization", "plotting", "eda", "speed-dating"]
+dependencies = ["matplotlib>=3.5", "numpy>=1.20"]
 
 [project.urls]
 Homepage = "https://github.com/szphzz/viz-lib"

@@ -1,8 +1,12 @@
-"""szviz: a tiny matplotlib wrapper with a lilac-purple default palette."""
+"""szviz: a tiny, love-themed matplotlib wrapper for the Speed Dating dataset."""
 
 from szviz.core import (
-    LILAC,
+    HEART,
+    MATCH,
+    NO_MATCH,
     PALETTE,
+    PASTELS,
+    ROSE,
     bar,
     barh,
     hist,
@@ -14,11 +18,15 @@ from szviz.core import (
     show,
 )
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
-    "LILAC",
+    "HEART",
+    "MATCH",
+    "NO_MATCH",
     "PALETTE",
+    "PASTELS",
+    "ROSE",
     "bar",
     "barh",
     "hist",
