@@ -1,6 +1,7 @@
 """szviz: a tiny, love-themed matplotlib wrapper for the Speed Dating dataset."""
 
 from szviz.core import (
+    GROUPED,
     HEART,
     MATCH,
     NO_MATCH,
@@ -22,6 +23,7 @@ from szviz.core import (
 __version__ = "0.3.0"
 
 __all__ = [
+    "GROUPED",
     "HEART",
     "MATCH",
     "NO_MATCH",

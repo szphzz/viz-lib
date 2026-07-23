@@ -37,7 +37,7 @@ szviz.save("prefs.png")
 # Grouped bars: one series per group, sorted by the cross-group average
 szviz.grouped_bar(
     ["Attractive", "Sincere", "Intelligent", "Fun", "Ambitious", "Shared int."],
-    {"Women": women_means, "Men": men_means},
+    {"Women": women_means, "Men": men_means},   # defaults to plum + gold
     sort="desc", title="Average rating received, by gender",
 )
 ```
@@ -71,6 +71,10 @@ colorblind-checked, romantic set (rose · plum · coral · *something blue* · g
 
 Extras for this dataset:
 
+- `szviz.GROUPED` — the default cycle for `grouped_bar`, leading with plum and
+  gold (`#8E56A6`, `#AF8A24`) then teal/coral/berry; colorblind-checked as
+  adjacent pairs so grouped series stay distinct without leaning on the
+  pink/blue gender cliché.
 - `szviz.PASTELS` — soft blush/lavender/peach tints for fills and backgrounds
   (intentionally light, so use them for area fills, not to tell series apart).
 - `szviz.MATCH` / `szviz.NO_MATCH` — a rose/muted-gray pair for the dataset's
