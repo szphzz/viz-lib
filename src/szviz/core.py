@@ -6,8 +6,6 @@ heart-shaped scatter markers. Every helper returns the ``(fig, ax)`` pair so
 you can keep tweaking with plain matplotlib afterwards.
 """
 
-from __future__ import annotations
-
 from typing import Optional, Sequence
 
 import numpy as np
