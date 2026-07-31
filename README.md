@@ -6,7 +6,7 @@ A tiny, **love-themed** data-visualization library built on top of
 so the defaults lean romantic: a rose-red primary color, a warm validated
 palette, soft pastel fills, and **heart-shaped scatter markers**.
 
-The whole library is a single ~180-line module — small enough to read in one
+The whole library is a single ~200-line module — small enough to read in one
 sitting.
 
 ## Install
@@ -17,30 +17,59 @@ pip install -e .
 
 ## Quickstart
 
+The two figures below are the heart of the demo — both come straight from
+[`examples/speed_dating.py`](examples/speed_dating.py), which runs with
+**zero setup** on a bundled data sample:
+
+```bash
+python examples/speed_dating.py
+```
+
 ```python
+import matplotlib.pyplot as plt
 import szviz
 
 szviz.set_theme()  # apply the love theme to every following figure
 
-# Single series defaults to rose-red
-szviz.line([0, 1, 2, 3], [3, 1, 4, 2], title="Interest over the date")
-szviz.show()
+# ── Visual 1: a four-panel overview ───────────────────────────────────
+fig, ax = plt.subplots(2, 2, figsize=(12, 8))
 
-# Scatter draws little hearts by default 💗
-szviz.scatter(attractiveness, likelihood, title="Attractiveness vs. liking")
+# palette-colored bars, one hue per attribute
+szviz.bar(labels, means, color=szviz.PALETTE,
+          title="Average rating received (1-10)", ax=ax[0][0])
 
-# Categorical charts cycle through the szviz palette
-szviz.bar(["Attr", "Sinc", "Intel", "Fun", "Amb", "Shar"], prefs,
-          title="What people say they want")
-szviz.save("prefs.png")
+# scatter draws little hearts by default 💗
+szviz.scatter(attractive, liked, alpha=0.35, xlabel="attractive",
+              ylabel="liked", title="Attractiveness vs. liking", ax=ax[0][1])
 
-# Grouped bars: one series per group, sorted by the cross-group average
+# a binary outcome in the reserved match colors
+szviz.pie(["Match", "No match"], [matches, misses],
+          colors=[szviz.MATCH, szviz.NO_MATCH], title="Did sparks fly?",
+          ax=ax[1][0])
+
+szviz.hist(ages, bins=25, title="Age of participants", xlabel="age", ax=ax[1][1])
+# distinguish the modal (tallest) age bin: recolor it gold and label it
+peak = max(ax[1][1].patches, key=lambda b: b.get_height())
+peak.set_facecolor("#AF8A24")
+center = peak.get_x() + peak.get_width() / 2
+ax[1][1].annotate(f"mode ≈ {center:.0f}  (n={int(peak.get_height())})",
+                  xy=(center, peak.get_height()), xytext=(0, 8),
+                  textcoords="offset points", ha="center",
+                  fontweight="bold", color="#AF8A24")
+szviz.save("overview.png", fig=fig)
+
+# ── Visual 2: grouped bars by gender, sorted high → low ───────────────
 szviz.grouped_bar(
     ["Attractive", "Sincere", "Intelligent", "Fun", "Ambitious", "Shared int."],
-    {"Women": women_means, "Men": men_means},   # defaults to plum + gold
-    sort="desc", title="Average rating received, by gender",
+    {"Women": women_means, "Men": men_means},   # no colors= → plum + gold default
+    sort="desc", ylabel="mean rating",
+    title="Average rating received, by gender (1-10)",
 )
+szviz.save("ratings_by_gender.png")
 ```
+
+Every helper returns the `(fig, ax)` pair, so — as with the mode highlight above
+— you can keep customizing with plain matplotlib afterwards.
 
 ## What you get
 
@@ -56,9 +85,8 @@ szviz.grouped_bar(
 | `pie(labels, values, ...)` | Pie chart |
 | `show()` / `save(path)` | Display or export the figure |
 
-Every helper returns the `(fig, ax)` pair, so you can keep customizing with
-plain matplotlib afterwards. Pass `marker=...` to `scatter` to opt out of
-hearts, or `szviz.HEART` to bring them anywhere else.
+Pass `marker=...` to `scatter` to opt out of hearts, or `szviz.HEART` to bring
+them anywhere else.
 
 ## The palette
 
@@ -84,10 +112,19 @@ Extras for this dataset:
 ## Examples
 
 [`examples/speed_dating.py`](examples/speed_dating.py) is a runnable tour of the
-library on the Speed Dating dataset — a four-panel overview plus the grouped
-by-gender chart. The dataset isn't bundled; download "Speed Dating Data.csv"
-from [Kaggle](https://www.kaggle.com/datasets/annavictoria/speed-dating-experiment)
-and point the script at it:
+library on the Speed Dating dataset — it produces the two visuals from the
+Quickstart (the four-panel overview and the grouped by-gender chart). With no
+arguments it runs on the bundled sample
+([`examples/sample_speed_dating.csv`](examples/sample_speed_dating.csv), a
+~250-row excerpt) so it works out of the box:
+
+```bash
+python examples/speed_dating.py
+```
+
+For the full picture, download "Speed Dating Data.csv" from
+[Kaggle](https://www.kaggle.com/datasets/annavictoria/speed-dating-experiment)
+and pass its path:
 
 ```bash
 python examples/speed_dating.py path/to/Speed_Dating_Data.csv
