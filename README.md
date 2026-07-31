@@ -26,39 +26,11 @@ python examples/speed_dating.py
 ```
 
 ```python
-import matplotlib.pyplot as plt
 import szviz
 
 szviz.set_theme()  # apply the love theme to every following figure
 
-# ── Visual 1: a four-panel overview ───────────────────────────────────
-fig, ax = plt.subplots(2, 2, figsize=(12, 8))
-
-# palette-colored bars, one hue per attribute
-szviz.bar(labels, means, color=szviz.PALETTE,
-          title="Average rating received (1-10)", ax=ax[0][0])
-
-# scatter draws little hearts by default 💗
-szviz.scatter(attractive, liked, alpha=0.35, xlabel="attractive",
-              ylabel="liked", title="Attractiveness vs. liking", ax=ax[0][1])
-
-# a binary outcome in the reserved match colors
-szviz.pie(["Match", "No match"], [matches, misses],
-          colors=[szviz.MATCH, szviz.NO_MATCH], title="Did sparks fly?",
-          ax=ax[1][0])
-
-szviz.hist(ages, bins=25, title="Age of participants", xlabel="age", ax=ax[1][1])
-# distinguish the modal (tallest) age bin: recolor it gold and label it
-peak = max(ax[1][1].patches, key=lambda b: b.get_height())
-peak.set_facecolor("#AF8A24")
-center = peak.get_x() + peak.get_width() / 2
-ax[1][1].annotate(f"mode ≈ {center:.0f}  (n={int(peak.get_height())})",
-                  xy=(center, peak.get_height()), xytext=(0, 8),
-                  textcoords="offset points", ha="center",
-                  fontweight="bold", color="#AF8A24")
-szviz.save("overview.png", fig=fig)
-
-# ── Visual 2: grouped bars by gender, sorted high → low ───────────────
+# ── Visual 1: grouped bars by gender, sorted high → low ───────────────
 szviz.grouped_bar(
     ["Attractive", "Sincere", "Intelligent", "Fun", "Ambitious", "Shared int."],
     {"Women": women_means, "Men": men_means},   # no colors= → plum + gold default
@@ -66,6 +38,17 @@ szviz.grouped_bar(
     title="Average rating received, by gender (1-10)",
 )
 szviz.save("ratings_by_gender.png")
+
+# ── Visual 2: age histogram with the modal bin highlighted ────────────
+fig, ax = szviz.hist(ages, bins=25, xlabel="age", title="Age of participants")
+peak = max(ax.patches, key=lambda b: b.get_height())   # the tallest bin
+peak.set_facecolor("#AF8A24")                          # recolor the mode gold
+center = peak.get_x() + peak.get_width() / 2
+ax.annotate(f"mode ≈ {center:.0f}  (n={int(peak.get_height())})",
+            xy=(center, peak.get_height()), xytext=(0, 8),
+            textcoords="offset points", ha="center",
+            fontweight="bold", color="#AF8A24")
+szviz.save("age_histogram.png")
 ```
 
 Every helper returns the `(fig, ax)` pair, so — as with the mode highlight above
@@ -113,8 +96,8 @@ Extras for this dataset:
 
 [`examples/speed_dating.py`](examples/speed_dating.py) is a runnable tour of the
 library on the Speed Dating dataset — it produces the two visuals from the
-Quickstart (the four-panel overview and the grouped by-gender chart). With no
-arguments it runs on the bundled sample
+Quickstart (the grouped by-gender chart and the mode-highlighted age
+histogram). With no arguments it runs on the bundled sample
 ([`examples/sample_speed_dating.csv`](examples/sample_speed_dating.csv), a
 ~250-row excerpt) so it works out of the box:
 

@@ -3,6 +3,9 @@
 Usage:
     python examples/speed_dating.py [path/to/Speed_Dating_Data.csv] [out_dir]
 
+It writes two figures: the grouped bar of mean ratings received by gender
+(sorted high -> low) and the age histogram with its modal bin highlighted.
+
 With no arguments it runs on the tiny bundled sample (sample_speed_dating.csv,
 a ~250-row excerpt of the public dataset) so it works with zero setup. For the
 full picture, grab "Speed Dating Data.csv" from
@@ -17,8 +20,6 @@ handles both. gender is coded 0 = women, 1 = men.
 import csv
 import os
 import sys
-
-import matplotlib.pyplot as plt
 
 import szviz
 
@@ -59,45 +60,21 @@ def mean(xs):
     return sum(xs) / len(xs) if xs else 0.0
 
 
-def overview(rows, out_dir):
-    """A four-panel tour of the dataset."""
-    szviz.set_theme()
-    fig, ax = plt.subplots(2, 2, figsize=(12, 8))
-
-    szviz.bar(LABELS, [mean(numbers(rows, a)) for a in ATTRS],
-              color=szviz.PALETTE, title="Average rating received (1-10)",
-              ax=ax[0][0])
-    ax[0][0].tick_params(axis="x", labelrotation=30)
-
-    pairs = [(x, y) for x, y in zip(numbers(rows, "attr_o"),
-                                    numbers(rows, "like_o"))][:600]
-    szviz.scatter([p[0] for p in pairs], [p[1] for p in pairs], alpha=0.35,
-                  title="Attractiveness vs. liking", xlabel="attractive",
-                  ylabel="liked", ax=ax[0][1])
-
-    m = numbers(rows, "match")
-    hits = sum(m)
-    szviz.pie(["Match", "No match"], [hits, len(m) - hits],
-              colors=[szviz.MATCH, szviz.NO_MATCH], title="Did sparks fly?",
-              ax=ax[1][0])
-
-    ah = ax[1][1]
-    szviz.hist(numbers(rows, "age"), bins=25, title="Age of participants",
-               xlabel="age", ax=ah)
-    # Distinguish the modal (tallest) bin: recolour it gold and label it.
-    peak = max(ah.patches, key=lambda b: b.get_height())
+def age_histogram(rows, out_dir):
+    """Age distribution with the modal (tallest) bin highlighted and labelled."""
+    fig, ax = szviz.hist(numbers(rows, "age"), bins=25, xlabel="age",
+                         title="Age of participants")
+    # Distinguish the modal bin: recolour it gold and label it.
+    peak = max(ax.patches, key=lambda b: b.get_height())
     peak.set_facecolor("#AF8A24")
     center = peak.get_x() + peak.get_width() / 2
-    ah.annotate(f"mode ≈ {center:.0f}  (n={int(peak.get_height())})",
+    ax.annotate(f"mode ≈ {center:.0f}  (n={int(peak.get_height())})",
                 xy=(center, peak.get_height()), xytext=(0, 8),
                 textcoords="offset points", ha="center", fontweight="bold",
                 color="#AF8A24")
-
-    fig.suptitle("szviz  ♥  Speed Dating", fontsize=18,
-                 fontweight="bold", x=0.02, ha="left")
-    path = os.path.join(out_dir, "overview.png")
+    path = os.path.join(out_dir, "age_histogram.png")
     szviz.save(path, fig=fig)
-    print(f"wrote {path}  (match rate {hits / len(m):.1%})")
+    print(f"wrote {path}")
 
 
 def ratings_by_gender(rows, out_dir):
@@ -122,8 +99,9 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
     rows = load(csv_path)
     print(f"loaded {len(rows)} rows from {csv_path}")
-    overview(rows, out_dir)
+    szviz.set_theme()  # apply the love theme to both figures
     ratings_by_gender(rows, out_dir)
+    age_histogram(rows, out_dir)
 
 
 if __name__ == "__main__":
